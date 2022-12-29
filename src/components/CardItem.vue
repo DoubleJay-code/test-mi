@@ -1,23 +1,29 @@
 <template>
   <div class="card">
-    <h2 class="card__title">{{ card?.title }}</h2>
+    <h2 class="card__title">
+      {{ card.title }}
+    </h2>
     <p class="card__text">
-      {{ card?.text }}
+      {{ card.text }}
     </p>
-    <img class="card__btn" src="../sourse/Star.svg" alt="favorites" />
+    <img
+      @click="appStore.favoriteCard(card)"
+      class="card__btn"
+      :class="{ active: card.flag }"
+      src="../sourse/Star.svg"
+      alt="favorites"
+    />
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { useAppStore } from '../store/appStore';
 
-export default defineComponent({
-  data() {
-    return {};
-  },
-  name: 'CardItem',
-  props: {
-    card: Object,
+const appStore = useAppStore();
+const props = defineProps({
+  card: {
+    type: Object,
+    required: true,
   },
 });
 </script>
@@ -47,6 +53,9 @@ export default defineComponent({
     padding: 10px;
     background-color: lightblue;
     border-radius: 50%;
+  }
+  .active {
+    background-color: lightcoral;
   }
 }
 </style>

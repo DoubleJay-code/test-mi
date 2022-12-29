@@ -1,46 +1,46 @@
 import { defineStore } from 'pinia';
 
+interface Card {
+  id: {
+    type: number;
+    required: true;
+  };
+  title: {
+    type: string;
+    required: true;
+  };
+  text: {
+    type: string;
+    required: true;
+  };
+  flag?: boolean;
+}
+
 export const useAppStore = defineStore('appSore', {
-  state: () => ({
-    jsonfe: [],
-    cards: [
-      {
-        id: 1,
-        title: 'Lorem ipsum dolor sit.1',
-        text: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deserunt ullam eligendi voluptatum ea, tempora illum nobis porro vitae adipisci harum est velit consequatur aut quiorem ipsum dolor, sit amet consectetur adipisicing elit. Deserunt ullam eligendi voluptatum ea, tempora.',
-      },
-      {
-        id: 2,
-        title: 'Lorem ipsum dolor sit.2',
-        text: 'Lorem ipsum dolor, arum est velit consequatur aut quidem cum tempore sed quia atque! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deserunt ullam eligendi voluptatum ea, tempora.',
-      },
-      {
-        id: 3,
-        title: 'Lorem ipsum dolor sit.3',
-        text: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deserunt ullam eligendi voluptatum ea, tempora illum nobis porro vitae adipisci harum est velit consequatur aut quidem cum 545345tempore sed quia atque! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deserunt ullam eligendi voluptatum ea, tempora.',
-      },
-      {
-        id: 4,
-        title: 'Lorem ipsum dolor sit.4',
-        text: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deserunt ullam eligendi voluptatum ea, tempora illum 5555555nobis porro vitae adipisci harum est velit consequatur aut quidem cum tempore sed quia atque! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deserunt ullam eligendi voluptatum ea, tempora.',
-      },
-      {
-        id: 5,
-        title: 'Lorem ipsum dolor sit.5',
-        text: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deserunt ullam eligendi voluptatum ea, tempora illum nobis porro vitae adipisci harum est velit consequatur aut quidem cum tempore sed quia 111111atque! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deserunt ullam eligendi voluptatum ea, tempora.',
-      },
-      {
-        id: 6,
-        title: 'Lorem ipsum dolor sit.6',
-        text: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deserunt ullam eligendi voluptatum ea, tempora illum nobis porro vitae adipisci harum est velit consequatur aut quidem cum tempore sed quia at4455566que! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deserunt ullam eligendi voluptatum ea, tempora.',
-      },
-    ],
-    actions: {
-      async getArray() {
+  state: (): any => ({
+    cards: [],
+  }),
+  actions: {
+    async getArray() {
+      if (localStorage.cards) {
+        this.cards = JSON.parse(localStorage.cards);
+      } else {
         const res = await fetch('/fetchCards.json');
         const data = await res.json();
-        console.log(data);
-      },
+        this.cards = data;
+      }
     },
-  }),
+    favoriteCard(card: any) {
+      this.cards.forEach((el: any, i: number, arr: any) => {
+        if (card.id === el.id && card.flag === undefined) {
+          this.cards[i] = { ...el, flag: true };
+        } else if (card.id === el.id && card.flag === true) {
+          this.cards[i] = { ...el, flag: false };
+        } else if (card.id === el.id && card.flag === false) {
+          this.cards[i] = { ...el, flag: true };
+        }
+      });
+      localStorage.cards = JSON.stringify(this.cards);
+    },
+  },
 });

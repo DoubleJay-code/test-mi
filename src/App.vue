@@ -4,24 +4,15 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { onMounted } from 'vue';
 import { useAppStore } from './store/appStore';
 import CardItem from './components/CardItem.vue';
 
 const appStore = useAppStore();
 
-export default defineComponent({
-  /* data() {
-    return {
-      appStore: useAppStore(),
-    };
-  }, */
-  name: 'App',
-  components: { CardItem },
-  mounted() {
-    appStore.getArray();
-  },
+onMounted(() => {
+  appStore.getArray();
 });
 </script>
 
