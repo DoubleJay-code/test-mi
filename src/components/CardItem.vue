@@ -7,9 +7,9 @@
       {{ card.text }}
     </p>
     <img
-      @click="appStore.favoriteCard(card)"
+      @click="appStore.toggleFavorite(card)"
       class="card__btn"
-      :class="{ active: card.flag }"
+      :class="{ active: appStore.favoriteCards[card.id] }"
       src="../sourse/Star.svg"
       alt="favorites"
     />
@@ -33,13 +33,14 @@ const props = defineProps({
 <style lang="scss" scoped>
 .card {
   max-width: 25vw;
-  height: 40vh;
+  height: 300px;
   display: flex;
   flex-direction: column;
   padding: 10px;
-  border: 2px solid black;
+  border: 2px solid #c05406;
   border-radius: 20px;
   margin-bottom: 20px;
+  background: #f7c6a3;
   .card__title {
     font-size: 24px;
     margin-bottom: 15px;
@@ -57,7 +58,7 @@ const props = defineProps({
     border-radius: 50%;
   }
   .active {
-    background-color: lightcoral;
+    background-color: red;
   }
 }
 </style>
