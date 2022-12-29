@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 
-interface Card {
+export interface Card {
   id: {
     type: number;
     required: true;
@@ -26,12 +26,12 @@ export const useAppStore = defineStore('appSore', {
         this.cards = JSON.parse(localStorage.cards);
       } else {
         const res = await fetch('/fetchCards.json');
-        const data = await res.json();
+        const data: Object[] = await res.json();
         this.cards = data;
       }
     },
-    favoriteCard(card: any) {
-      this.cards.forEach((el: any, i: number, arr: any) => {
+    favoriteCard(card: Card) {
+      this.cards.forEach((el: Card, i: number) => {
         if (card.id === el.id && card.flag === undefined) {
           this.cards[i] = { ...el, flag: true };
         } else if (card.id === el.id && card.flag === true) {
