@@ -18,11 +18,13 @@
 
 <script setup lang="ts">
 import { useAppStore } from '../store/appStore';
+import { Card } from '../store/appStore';
+import { PropType } from 'vue';
 
 const appStore = useAppStore();
 const props = defineProps({
   card: {
-    type: Object,
+    type: Object as PropType<Card>,
     required: true,
   },
 });

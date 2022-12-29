@@ -1,24 +1,16 @@
 import { defineStore } from 'pinia';
 
 export interface Card {
-  id: {
-    type: number;
-    required: true;
-  };
-  title: {
-    type: string;
-    required: true;
-  };
-  text: {
-    type: string;
-    required: true;
-  };
+  id: number;
+  title: string;
+  text: string;
   flag?: boolean;
 }
 
 export const useAppStore = defineStore('appSore', {
-  state: (): any => ({
-    cards: [],
+  state: () => ({
+    cards: [] as Card[],
+    //favorite: [] as number[],
   }),
   actions: {
     async getArray() {
@@ -26,7 +18,7 @@ export const useAppStore = defineStore('appSore', {
         this.cards = JSON.parse(localStorage.cards);
       } else {
         const res = await fetch('/fetchCards.json');
-        const data: Object[] = await res.json();
+        const data: Card[] = await res.json();
         this.cards = data;
       }
     },
